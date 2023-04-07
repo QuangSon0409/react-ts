@@ -7,12 +7,17 @@ interface DataType {
   _id: number | string;
   name: string;
   price: number;
+  originalPrice: number;
+  description: string;
+  image: string;
 }
 type IProduct = {
   _id: string | number;
   name: string;
   price: number;
-  desc: string;
+  originalPrice: number;
+  description: string;
+  image: string;
 };
 interface Props {
   products: IProduct[];
@@ -37,10 +42,21 @@ const ProductShow = (props: Props) => {
       key: "price",
     },
     {
+      title: "Product Original Price",
+      dataIndex: "originalPrice",
+      key: "originalPrice",
+    },
+    {
       title: "Description",
-      dataIndex: "desc",
-      key: "desc",
+      dataIndex: "description",
+      key: "description",
       render: (text) => <p>{text}</p>,
+    },
+    {
+      title: "Product Image",
+      dataIndex: "image",
+      key: "image",
+      render: (text) => <img src={text} alt="" />,
     },
     {
       title: "Action",
@@ -67,7 +83,9 @@ const ProductShow = (props: Props) => {
       },
     },
   ];
-  const data: DataType[] = props.products.map((item: IProduct, index) => {
+  console.log(props.products);
+
+  const data: DataType[] = props.products?.map((item: IProduct, index) => {
     return {
       key: item._id,
       ...item,
@@ -76,7 +94,7 @@ const ProductShow = (props: Props) => {
   return (
     <div>
       <Button type="primary" style={{ backgroundColor: "#14dbac" }}>
-        <Link to={"admin/products/add"}>Add New Product</Link>
+        <Link to={"/admin/products/add"}>Add New Product</Link>
       </Button>
       <Table columns={columns} dataSource={data} pagination={{ pageSize: 5 }} />
     </div>

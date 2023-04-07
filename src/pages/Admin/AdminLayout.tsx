@@ -61,6 +61,9 @@ const AdminLayout = () => {
           <Menu.Item key="2" icon={<UserOutlined />}>
             <Link to={"/admin/products"}>Product Management</Link>
           </Menu.Item>
+          <Menu.Item key="3" icon={<UserOutlined />}>
+            <Link to={"/admin/categories"}>Category Management</Link>
+          </Menu.Item>
         </Menu>
       </Sider>
       <Layout className="site-layout" style={{ marginLeft: 200 }}>
@@ -69,7 +72,7 @@ const AdminLayout = () => {
           style={{
             margin: "24px 16px 0",
             overflow: "initial",
-            height: "100vh",
+            height: "200vh",
           }}
         >
           <div
@@ -81,9 +84,9 @@ const AdminLayout = () => {
             <Outlet />
           </div>
         </Content>
-        <Footer style={{ textAlign: "center" }}>
+        {/* <Footer style={{ textAlign: "center", height: "20vh" }}>
           Ant Design ©2023 Created by Ant UED
-        </Footer>
+        </Footer> */}
       </Layout>
     </Layout>
   );
