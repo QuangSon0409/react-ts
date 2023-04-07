@@ -10,7 +10,7 @@ import {
 import Signin from "./pages/Client/Signin";
 import Signup from "./pages/Client/Signup";
 import UserLayout from "./components/layout/use";
-import axios from "axios";
+
 import Homepage from "./pages/Client/homepage";
 import ProductDetail from "./pages/Client/ProductDetail";
 import PrivateRouter from "./components/PrivateRouter";
@@ -43,24 +43,23 @@ function App() {
   const [category, setCategory] = useState([]);
   const fetchProduct = async () => {
     const { data } = await getProduct();
-    console.log(data);
-
     setProduct(data);
   };
   const fetchCategory = async () => {
     const { data } = await getAllCategory();
-    console.log(data);
-
     setCategory(data);
   };
   useEffect(() => {
     fetchProduct();
+
     fetchCategory();
   }, []);
   const oneHandleRemove = (id: number | string) => {
     deleteProduct(id).then(() => {
-      setProduct(product.filter((item: IProduct) => item._id !== id));
+      const newData = product.filter((item: IProduct) => item._id !== id);
+      setProduct(newData);
     });
+    console.log(product);
   };
   const oneHandleAdd = async (products: IProduct) => {
     const {

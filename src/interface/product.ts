@@ -1,14 +1,8 @@
 export default interface IProduct {
-  id: string;
+  _id: string | number;
   name: string;
   price: number;
-  original_price: number;
+  originalPrice: number;
   description: string;
-  images: { base_url: string }[];
-  brand: { id: number; name: string; slug: string };
-  specifications: ISpecification[];
-}
-export interface ISpecification {
-  name: string;
-  attributes: { code: string; name: string; value: string }[];
+  image: string;
 }

@@ -1,6 +1,8 @@
 import { Button, Space, Table, Popconfirm, message } from "antd";
 import type { ColumnsType } from "antd/es/table";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { getProduct } from "../../../api/product";
 
 interface DataType {
   key: string | number;
@@ -83,9 +85,16 @@ const ProductShow = (props: Props) => {
       },
     },
   ];
-  console.log(props.products);
-
-  const data: DataType[] = props.products?.map((item: IProduct, index) => {
+  // console.log(props.products);
+  const [product, setProduct] = useState([]);
+  const fetchProduct = async () => {
+    const response = await getProduct();
+    setProduct(response.data);
+  };
+  useEffect(() => {
+    fetchProduct();
+  }, []);
+  const data: DataType[] = product.map((item: IProduct, index) => {
     return {
       key: item._id,
       ...item,

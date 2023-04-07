@@ -1,6 +1,8 @@
 import { Button, Space, Table, Popconfirm, message } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { Link } from "react-router-dom";
+import { getAllCategory } from "../../../api/category";
+import { useEffect, useState } from "react";
 
 interface DataType {
   key: string | number;
@@ -53,7 +55,18 @@ const CategoryShow = (props: Props) => {
       },
     },
   ];
-  const data: DataType[] = props.categories.map((item: ICate, index) => {
+  const [category, setCategory] = useState([]);
+  const fetchCategory = async () => {
+    const { data } = await getAllCategory();
+    // console.log(data);
+
+    setCategory(data);
+  };
+  useEffect(() => {
+    fetchCategory();
+  }, []);
+
+  const data: DataType[] = category.map((item: ICate, index) => {
     return {
       key: item._id,
       ...item,

@@ -4,13 +4,14 @@ import IProduct from "../../interface/product";
 
 import { Interweave } from "interweave";
 import axios from "axios";
+import { getById } from "../../api/product";
 
 const ProductDetail = () => {
   const [product, setProduct] = useState<IProduct>({} as IProduct);
   const { id } = useParams();
   const fetchProduct = async () => {
     if (id) {
-      const { data } = await axios.get(`http://localhost:3000/products/${id}`);
+      const { data } = await getById(id);
       setProduct(data);
       console.log(data);
     }
@@ -45,7 +46,7 @@ const ProductDetail = () => {
           <div className="flex-1 min-w-0">
             <img
               className=" w-[358px] object-cover lg:h-full lg:w-96"
-              src={product.images?.[0].base_url}
+              src={product.image}
               alt="Product Image"
             />
           </div>
@@ -53,7 +54,7 @@ const ProductDetail = () => {
             <div className="max-w-2xl flex flex-col justify-between">
               <div className="mt-4">
                 <span className="mt-1 text-2xl  font-semibold text-red-500">
-                  {product.original_price}đ
+                  {product.originalPrice}đ
                 </span>{" "}
                 <span className="mt-1 ml-1 text-sm font-semibold text-gray-500">
                   {product.price}đ
@@ -82,22 +83,13 @@ const ProductDetail = () => {
                 alt="Thumbnail 1"
               />
             </div>
-            {product.images
-              ? product.images.map((image, index) => {
-                  return (
-                    <div
-                      key={index}
-                      className="w-[70px] h-[50] p-[5px] border-solid rounded-lg border-2 border-[#D1D5DB] mx-[4px]"
-                    >
-                      <img
-                        className=" object-cover cursor-pointer"
-                        src={image.base_url}
-                        alt="Thumbnail 1"
-                      />
-                    </div>
-                  );
-                })
-              : ""}
+            <div className="w-[70px] h-[50] p-[5px] border-solid rounded-lg border-2 border-[#D1D5DB] mx-[4px]">
+              <img
+                className=" object-cover cursor-pointer"
+                src="../phone.png"
+                alt="Thumbnail 1"
+              />
+            </div>
           </div>
           <div className="mt-auto flex ml-[250px]">
             <button className="bg-[#FF3945]  text-[#FFFFFF] w-[240px] h-12 rounded-md hover:bg-white hover:border-[#FF3945] hover:text-[#FF3945] hover:border-2 ease-linear transition-all">

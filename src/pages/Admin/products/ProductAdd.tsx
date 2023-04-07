@@ -21,7 +21,7 @@ const ProductAdd = ({ onAdd, category }: Props) => {
     formState: { errors },
   } = useForm();
   const onHandleSubmit = (product: any) => {
-    console.log(product);
+    // console.log(product);
 
     onAdd(product);
     navigate("/admin/products");
