@@ -1,14 +1,24 @@
 import React from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { isAuthenticate } from "../utils/localStroage";
+import { Alert, Space } from "antd";
 
 type PrivateRouterProps = {
   children: JSX.Element;
 };
+const onClose = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  console.log(e, "I was closed.");
+};
 
-const PrivateRouter = (props: PrivateRouterProps) => {
+export const PrivateRouter = (props: PrivateRouterProps) => {
   const user = isAuthenticate();
   if (!user.role) {
+    <Alert
+      message="Bạn cần đăng nhập để thực hiện chức năng này"
+      type="warning"
+      closable
+      onClose={onClose}
+    />;
     return <Navigate to="/signin" />;
   }
   if (user.role === "member") {
@@ -17,4 +27,17 @@ const PrivateRouter = (props: PrivateRouterProps) => {
   return props.children;
 };
 
-export default PrivateRouter;
+export const PrivateMember = (props: PrivateRouterProps) => {
+  const user = isAuthenticate();
+  if (!user) {
+    <Alert
+      message="Bạn cần đăng nhập để thực hiện chức năng này"
+      type="warning"
+      closable
+      onClose={onClose}
+    />;
+    return <Navigate to="/signin" />;
+  }
+
+  return props.children;
+};

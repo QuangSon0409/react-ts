@@ -1,24 +1,43 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import IProduct from "../../interface/product";
-
+import { Button, message } from "antd";
 import { Interweave } from "interweave";
 import axios from "axios";
 import { getById } from "../../api/product";
+import { isAuthenticate } from "../../utils/localStroage";
+type props = {
+  onAdd: (product: IProduct, quantity: number) => void;
+};
+const ProductDetail = (props: props) => {
+  const [messageApi, contextHolder] = message.useMessage();
 
-const ProductDetail = () => {
+  const info = () => {
+    messageApi.info("Hello, Ant Design!");
+  };
+  const { onAdd } = props;
   const [product, setProduct] = useState<IProduct>({} as IProduct);
+  const [quantity, setQuantity] = useState(1);
+  const handleQuantityChange = (e: any) => {
+    setQuantity(Number(e.target.value));
+  };
+  console.log("quantity: " + quantity);
+
   const { id } = useParams();
   const fetchProduct = async () => {
     if (id) {
       const { data } = await getById(id);
       setProduct(data);
-      console.log(data);
+      // console.log(data);
     }
   };
   useEffect(() => {
     fetchProduct();
-  }, []);
+  }, [id]);
+  const handleAddCartClick = () => {
+    onAdd(product, quantity);
+  };
+
   return (
     <>
       <div className="border-b-2">
@@ -65,6 +84,17 @@ const ProductDetail = () => {
                   bản A73, Samsung đã tạo nên một chiếc smartphone với vẻ ngoài
                   mang đến cảm giác sang trọng và tinh tế.
                 </p>
+                <div className="ml-5">
+                  <label htmlFor="" className="">
+                    Quantity:{" "}
+                  </label>
+                  <input
+                    className=" border border-[#e0e0e0] bg-white text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+                    type="number"
+                    value={quantity}
+                    onChange={handleQuantityChange}
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -90,18 +120,32 @@ const ProductDetail = () => {
                 alt="Thumbnail 1"
               />
             </div>
+            <div className="w-[70px] h-[50] p-[5px] border-solid rounded-lg border-2 border-[#D1D5DB] mx-[4px]">
+              <img
+                className=" object-cover cursor-pointer"
+                src="../phone.png"
+                alt="Thumbnail 1"
+              />
+            </div>
+            <div className="w-[70px] h-[50] p-[5px] border-solid rounded-lg border-2 border-[#D1D5DB] mx-[4px]">
+              <img
+                className=" object-cover cursor-pointer"
+                src="../phone.png"
+                alt="Thumbnail 1"
+              />
+            </div>
           </div>
           <div className="mt-auto flex ml-[250px]">
             <button className="bg-[#FF3945]  text-[#FFFFFF] w-[240px] h-12 rounded-md hover:bg-white hover:border-[#FF3945] hover:text-[#FF3945] hover:border-2 ease-linear transition-all">
-              <a href="/gio-hang">Mua ngay</a>
+              <a href="">Mua ngay</a>
             </button>
             <div className="w-12 h-12 border-red-600 border-2 ml-5 rounded-md flex justify-center items-center cursor-pointer hover:bg-white group">
-              <a href="/gio-hang">
+              <a href="">
                 <img className="w-5 h-5" src="/cart.png" alt="" />
               </a>
             </div>
             <span className="w-16 text-sm ml-5 cursor-pointer">
-              <a href="/gio-hang">Thêm vào giỏ hàng</a>
+              <button onClick={handleAddCartClick}>Thêm vào giỏ hàng</button>
             </span>
           </div>
         </div>
@@ -129,7 +173,10 @@ const ProductDetail = () => {
           </ul>
         </div>
         <div className="mt-[20px]">
-          <Interweave content={product.description} />
+          <div
+            className=""
+            dangerouslySetInnerHTML={{ __html: product.description }}
+          ></div>
         </div>
         <button className="mt-[40px] ml-[400px] border-solid rounded-full border-2 border-black px-24 py-2">
           Xem Thêm

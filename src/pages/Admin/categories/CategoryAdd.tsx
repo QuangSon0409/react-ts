@@ -32,7 +32,9 @@ const CategoryAdd = ({ onAdd }: Props) => {
             {...register("name", { required: true })}
           />
           {errors.name && (
-            <span className="text-red-500">This field is required</span>
+            <span className="text-red-500 text-[18px]">
+              This field is required
+            </span>
           )}
         </div>
 

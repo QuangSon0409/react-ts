@@ -22,7 +22,6 @@ type IProduct = {
   image: string;
 };
 interface Props {
-  products: IProduct[];
   onRemove: (id: number | string) => void;
 }
 

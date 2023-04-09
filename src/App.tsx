@@ -13,7 +13,7 @@ import UserLayout from "./components/layout/use";
 
 import Homepage from "./pages/Client/homepage";
 import ProductDetail from "./pages/Client/ProductDetail";
-import PrivateRouter from "./components/PrivateRouter";
+
 import AdminLayout from "./pages/Admin/AdminLayout";
 import Dashboard from "./pages/Admin/Dashbroad";
 import ProductShow from "./pages/Admin/products/ProductShow";
@@ -28,6 +28,8 @@ import {
 } from "./api/category";
 import CategoryAdd from "./pages/Admin/categories/CategoryAdd";
 import CategoryEdit from "./pages/Admin/categories/CategoryEdit";
+import Cart from "./pages/Client/cart";
+import { PrivateMember, PrivateRouter } from "./components/PrivateRouter";
 type IProduct = {
   _id?: number | string;
   name: string;
@@ -37,6 +39,14 @@ interface ICate {
   _id?: string | number;
   name: string;
 }
+type ICardType = {
+  product: {
+    _id: number | string;
+    name: string;
+    price: number;
+  };
+  quantity: number;
+};
 
 function App() {
   const [product, setProduct] = useState([]);
@@ -91,7 +101,46 @@ function App() {
     console.log("response", response.data.data);
     setProduct(response.data.data);
   };
+  // /** Add to card */
 
+  const [cartItems, setCartItems] = useState(() => {
+    const savedCartItems = localStorage.getItem("cartItems");
+    if (savedCartItems) {
+      return JSON.parse(savedCartItems);
+    } else {
+      return [];
+    }
+  });
+
+  const handleAddToCart = (product: any, quantity: any) => {
+    const existingCartItem = cartItems.find(
+      (item: ICardType) => item.product._id === product._id
+    );
+    if (existingCartItem) {
+      setCartItems(
+        cartItems.map((item: ICardType) =>
+          item.product._id === product._id
+            ? { ...item, quantity: item.quantity + quantity }
+            : item
+        )
+      );
+    } else {
+      setCartItems([...cartItems, { product, quantity }]);
+    }
+  };
+
+  const handleClearCart = () => {
+    setCartItems([]);
+  };
+  const removeCartItem = (product: any) => {
+    setCartItems(
+      cartItems.filter((item: any) => item.product._id !== product._id)
+    );
+  };
+
+  useEffect(() => {
+    localStorage.setItem("cartItems", JSON.stringify(cartItems));
+  }, [cartItems]);
   return (
     <div className="App">
       <Routes>
@@ -99,7 +148,22 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/" element={<UserLayout />}>
           <Route index element={<Homepage />} />
-          <Route path="product/:id" element={<ProductDetail />} />
+          <Route
+            path="product/:id"
+            element={<ProductDetail onAdd={handleAddToCart} />}
+          />
+          <Route
+            path="cart"
+            element={
+              <PrivateMember>
+                <Cart
+                  item={cartItems}
+                  onclearCart={handleClearCart}
+                  onRemove={removeCartItem}
+                />
+              </PrivateMember>
+            }
+          />
         </Route>
         <Route
           path="/admin"
@@ -111,12 +175,7 @@ function App() {
         >
           <Route index element={<Dashboard />} />
           <Route path="products">
-            <Route
-              index
-              element={
-                <ProductShow products={product} onRemove={oneHandleRemove} />
-              }
-            />
+            <Route index element={<ProductShow onRemove={oneHandleRemove} />} />
             <Route
               path="add"
               element={<ProductAdd onAdd={oneHandleAdd} category={category} />}
