@@ -21,12 +21,9 @@ const Homepage = () => {
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
-  const indexOfLastProduct = currentPage * 2;
-  const indexOfFirstProduct = indexOfLastProduct - 2;
-  const currentProducts = products.slice(
-    indexOfFirstProduct,
-    indexOfLastProduct
-  );
+  const startIndex = (currentPage - 1) * 3;
+  const endIndex = startIndex + 3;
+  const currentProducts = products.slice(startIndex, endIndex);
   return (
     <>
       <h1 className="uppercase mt-6 mb-3 pl-5">Điện Thoại Nổi Bật</h1>
@@ -39,7 +36,7 @@ const Homepage = () => {
         <Pagination
           current={currentPage}
           onChange={handlePageChange}
-          pageSize={2}
+          pageSize={3}
           total={products.length}
         />
       </div>

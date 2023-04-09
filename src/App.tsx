@@ -67,9 +67,11 @@ function App() {
   const oneHandleRemove = (id: number | string) => {
     deleteProduct(id).then(() => {
       const newData = product.filter((item: IProduct) => item._id !== id);
+      console.log(newData);
+
       setProduct(newData);
     });
-    console.log(product);
+    
   };
   const oneHandleAdd = async (products: IProduct) => {
     const {
