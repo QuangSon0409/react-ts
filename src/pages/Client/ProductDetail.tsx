@@ -34,8 +34,11 @@ const ProductDetail = (props: props) => {
   useEffect(() => {
     fetchProduct();
   }, [id]);
+  const user = isAuthenticate();
+
   const handleAddCartClick = () => {
     onAdd(product, quantity);
+    alert("Thêm sản phẩm thành công");
   };
 
   return (
@@ -91,6 +94,8 @@ const ProductDetail = (props: props) => {
                   <input
                     className=" border border-[#e0e0e0] bg-white text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                     type="number"
+                    min={1}
+                    max={20}
                     value={quantity}
                     onChange={handleQuantityChange}
                   />
@@ -145,7 +150,12 @@ const ProductDetail = (props: props) => {
               </a>
             </div>
             <span className="w-16 text-sm ml-5 cursor-pointer">
-              <button onClick={handleAddCartClick}>Thêm vào giỏ hàng</button>
+              {user ? (
+                <button onClick={handleAddCartClick}>Thêm vào giỏ hàng</button>
+              ) : (
+                <button>Thêm vào giỏ hàng</button>
+              )}
+              {/* <button onClick={handleAddCartClick}>Thêm vào giỏ hàng</button> */}
             </span>
           </div>
         </div>

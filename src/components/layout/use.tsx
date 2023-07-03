@@ -4,16 +4,14 @@ import Header from "../../utils/header";
 import Footer from "../../utils/footer";
 import Slider from "../../utils/slider";
 
-type Props = {};
-
-const UserLayout = (props: Props) => {
+const UserLayout = () => {
   return (
     <>
       {/* Header */}
       <header className="bg-red-500 ">
         <Header></Header>
       </header>
-      {/* <Slider></Slider> */}
+      <Slider></Slider>
       {/* Content */}
       <Outlet></Outlet>
       <footer>

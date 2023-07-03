@@ -28,6 +28,7 @@ interface Props {
 const ProductShow = (props: Props) => {
   const removeProduct = (id: string | number) => {
     props.onRemove(id);
+    location.reload();
   };
 
   const columns: ColumnsType<DataType> = [
